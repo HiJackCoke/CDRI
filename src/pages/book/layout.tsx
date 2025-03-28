@@ -1,5 +1,6 @@
 import { ReactNode } from "react";
 import { Outlet } from "react-router-dom";
+import Header from "../../components/Header";
 
 interface LayoutProps {
   children: ReactNode;
@@ -8,7 +9,7 @@ interface LayoutProps {
 function Layout({ children }: LayoutProps) {
   return (
     <div>
-      Layout
+      <Header />
       {children}
       <Outlet />
     </div>
