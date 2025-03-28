@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { Link } from "react-router-dom";
 
 export const Container = styled.div`
@@ -7,20 +7,22 @@ export const Container = styled.div`
   align-items: center;
   justify-content: center;
   height: 100vh;
-  background-color: #f8f9fa;
+  background-color: ${({ theme }) => theme.Palette.White};
   text-align: center;
   padding: 0 2rem;
 `;
 
 export const Code = styled.h1`
-  font-size: 8rem;
-  font-weight: 700;
-  color: #ff4d4f;
+  ${({ theme }) => css`
+    ${theme.Title1};
+    color: ${theme.Palette.Primary};
+  `};
   margin-bottom: 1rem;
 `;
 
 export const Message = styled.p`
-  font-size: 1.5rem;
+  ${({ theme }) => theme.Body1};
+
   color: #333;
   margin-bottom: 2rem;
 `;
@@ -28,8 +30,13 @@ export const Message = styled.p`
 export const HomeLink = styled(Link)`
   display: inline-block;
   padding: 0.75rem 1.5rem;
-  background-color: #1890ff;
-  color: white;
+
+  ${({ theme }) => css`
+    ${theme.Body1};
+    background-color: ${theme.Palette.Primary};
+    color: ${theme.Palette.White};
+  `}
+
   border-radius: 8px;
   font-weight: 500;
   text-decoration: none;
