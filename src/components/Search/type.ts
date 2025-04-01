@@ -1,12 +1,20 @@
 import { ChangeEventHandler, FormEventHandler } from "react";
 
-export interface SearchViewProps {
+type SearchEventHandler = (keyword: string) => void;
+
+export type SearchViewProps = {
   histories: string[];
   keyword: string;
 
-  onSearch: FormEventHandler<HTMLFormElement>;
+  onSubmit: FormEventHandler<HTMLFormElement>;
 
   onInputChange: ChangeEventHandler<HTMLInputElement>;
-  onHistorySelect: (item: string) => void;
-  onHistoryRemove: (item: string) => void;
-}
+  onHistorySelect: SearchEventHandler;
+  onHistoryRemove: SearchEventHandler;
+};
+
+export type SearchProps = {
+  onSearch?: SearchEventHandler;
+  // onSelect?: SearchEventHandler;
+  // onDelete?: SearchEventHandler;
+};

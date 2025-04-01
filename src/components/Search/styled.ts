@@ -95,7 +95,7 @@ export const SearchBox = styled.div<{ $historyLength: number }>`
 
     &:focus-within {
       > div {
-        margin-top: 21px;
+        margin-top: ${$historyLength > 0 ? "21px;" : 0};
 
         max-height: ${$historyLength * 50}px;
       }

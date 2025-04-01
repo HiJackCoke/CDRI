@@ -21,7 +21,7 @@ const SearchView = (
     keyword,
     histories,
 
-    onSearch,
+    onSubmit,
     onInputChange,
     onHistorySelect,
     onHistoryRemove,
@@ -47,7 +47,7 @@ const SearchView = (
       <Title>도서 검색</Title>
       <SearchArea>
         <SearchBox ref={ref} $historyLength={histories.length}>
-          <SearchForm onSubmit={onSearch}>
+          <SearchForm onSubmit={onSubmit}>
             <img src={searchIcon} />
             <StyledInput
               id="book-search"

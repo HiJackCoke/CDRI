@@ -1,45 +1,71 @@
-import { ChangeEventHandler, FormEventHandler, useRef, useState } from "react";
+import {
+  ChangeEventHandler,
+  FormEventHandler,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import SearchView from "./View";
-import { SearchViewProps } from "./type";
+import { SearchProps, SearchViewProps } from "./type";
 
-const Search = () => {
+const isStringArray = (value: unknown): value is string[] => {
+  return (
+    Array.isArray(value) &&
+    value.every((keyword) => typeof keyword === "string")
+  );
+};
+
+const Search = ({ onSearch }: SearchProps) => {
   const searchBoxRef = useRef<HTMLDivElement>(null);
 
   const [keyword, setKeyword] = useState("");
-  const [history, setHistory] = useState([
-    "1",
-    "2",
-    "3",
-    "4",
-    "5",
-    "6",
-    "7",
-    "8",
-  ]);
+  const [history, setHistory] = useState<string[]>([]);
 
   const handleChange: ChangeEventHandler<HTMLInputElement> = (e) => {
     setKeyword(e.target.value);
   };
 
+  const handleHistory = useCallback((newHistory: typeof history) => {
+    localStorage.setItem("search-history", JSON.stringify(newHistory));
+    setHistory(newHistory);
+  }, []);
+
   const handleSubmit: FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
 
-    console.log(keyword);
+    onSearch?.(keyword);
+
+    const newHistory = [...history, keyword];
+    handleHistory(newHistory);
   };
 
-  const handleRemove = (item: string) => {
-    setHistory((prev) => prev.filter((h) => h !== item));
+  const handleRemove = (keyword: string) => {
+    const newHistory = history.filter((history) => history !== keyword);
+    handleHistory(newHistory);
   };
 
-  const handleHistorySelect = (item: string) => {
-    console.log(item);
+  const handleHistorySelect = (keyword: string) => {
+    onSearch?.(keyword);
   };
+
+  useEffect(() => {
+    const storage = localStorage.getItem("search-history");
+
+    if (storage) {
+      const history = JSON.parse(storage);
+
+      if (isStringArray(history)) {
+        setHistory(history);
+      }
+    }
+  }, []);
 
   const viewProps: SearchViewProps = {
     keyword,
     histories: history,
 
-    onSearch: handleSubmit,
+    onSubmit: handleSubmit,
     onInputChange: handleChange,
     onHistorySelect: handleHistorySelect,
     onHistoryRemove: handleRemove,
