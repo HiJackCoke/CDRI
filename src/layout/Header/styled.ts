@@ -1,13 +1,17 @@
 import styled, { css } from "styled-components";
 
 export const Container = styled.header`
+  justify-self: center;
+  max-width: 1280px;
+
   width: 100%;
   height: 80px;
-  padding: 0 2.5rem;
+  padding-block: 24px;
 
   display: flex;
+
   align-items: center;
-  justify-content: space-between;
+  justify-content: stretch;
   box-sizing: border-box;
 
   color: ${({ theme }) => theme.Text.Primary};
