@@ -34,10 +34,9 @@ const Search = ({ onSearch }: SearchProps) => {
   const handleSubmit: FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
 
-    onSearch?.(keyword);
-
-    const newHistory = [...history, keyword];
+    const newHistory = [keyword, ...history.slice(0, 7)];
     handleHistory(newHistory);
+    onSearch?.(keyword);
   };
 
   const handleRemove = (keyword: string) => {
