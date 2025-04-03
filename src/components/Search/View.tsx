@@ -13,21 +13,19 @@ import {
   HistoryItem,
   HistoryWrapper,
 } from "./styled";
-import { ForwardedRef, forwardRef, MouseEvent } from "react";
+import { MouseEvent } from "react";
 import { SearchViewProps } from "./type";
 
-const SearchView = (
-  {
-    keyword,
-    histories,
+const SearchView = ({
+  ref,
+  keyword,
+  histories,
 
-    onSubmit,
-    onInputChange,
-    onHistorySelect,
-    onHistoryRemove,
-  }: SearchViewProps,
-  ref: ForwardedRef<HTMLDivElement>
-) => {
+  onSubmit,
+  onInputChange,
+  onHistorySelect,
+  onHistoryRemove,
+}: SearchViewProps) => {
   const handleHistoryRemove =
     (item: string) => (e: MouseEvent<HTMLButtonElement>) => {
       e.stopPropagation();
@@ -86,4 +84,4 @@ const SearchView = (
   );
 };
 
-export default forwardRef(SearchView);
+export default SearchView;

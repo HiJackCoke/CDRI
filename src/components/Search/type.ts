@@ -1,8 +1,9 @@
-import { ChangeEventHandler, FormEventHandler } from "react";
+import { ChangeEventHandler, FormEventHandler, ForwardedRef } from "react";
 
 type SearchEventHandler = (keyword: string) => void;
 
 export type SearchViewProps = {
+  ref: ForwardedRef<HTMLDivElement>;
   histories: string[];
   keyword: string;
 

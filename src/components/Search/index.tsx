@@ -61,6 +61,7 @@ const Search = ({ onSearch }: SearchProps) => {
   }, []);
 
   const viewProps: SearchViewProps = {
+    ref: searchBoxRef,
     keyword,
     histories: history,
 
@@ -70,7 +71,7 @@ const Search = ({ onSearch }: SearchProps) => {
     onHistoryRemove: handleRemove,
   };
 
-  return <SearchView ref={searchBoxRef} {...viewProps} />;
+  return <SearchView {...viewProps} />;
 };
 
 export default Search;
