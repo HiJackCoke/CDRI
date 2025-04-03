@@ -8,13 +8,16 @@ import { ButtonGroup, Price, StyledButton } from "./styled";
 
 type Props = Pick<
   Response["documents"][number],
-  "title" | "authors" | "price" | "thumbnail"
+  "isbn" | "title" | "authors" | "price" | "thumbnail"
 > &
   DetailProps & {
-    onExpand?: (isOpen: boolean) => void;
+    expanded: boolean;
+    onExpand?: (isbn: string) => void;
   };
 
 const BookListItem = ({
+  expanded,
+  isbn,
   title,
   sale_price,
   price,
@@ -24,8 +27,6 @@ const BookListItem = ({
 
   onExpand,
 }: Props) => {
-  const [isOpen, setIsOpen] = useState(false);
-
   const ref = useRef<HTMLDivElement>(null);
   const [height, setHeight] = useState<number>(0);
 
@@ -38,12 +39,11 @@ const BookListItem = ({
   }, [ref]);
 
   const handleExpand = () => {
-    setIsOpen(!isOpen);
-    onExpand?.(!isOpen);
+    onExpand?.(isbn);
   };
 
   return (
-    <Container ref={ref} $height={height} $isOpen={isOpen}>
+    <Container ref={ref} $height={height} $isOpen={expanded}>
       <Thumbnail src={thumbnail} alt={title} />
 
       <ContentWrapper>
@@ -58,7 +58,7 @@ const BookListItem = ({
 
           <ButtonGroup>
             <BuyButton>구매하기</BuyButton>
-            <DetailButton $isOpen={isOpen} onClick={handleExpand}>
+            <DetailButton $isOpen={expanded} onClick={handleExpand}>
               상세보기
               <img src="/images/arrow-icon.svg" alt="arrow" />
             </DetailButton>

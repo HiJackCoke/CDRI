@@ -11,18 +11,25 @@ interface Props {
 }
 
 const BookList = ({ data }: Props) => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [openedBook, setOpenedBook] = useState<string[]>([]);
 
-  const handleDetailClick = (open: boolean) => {
-    setIsOpen(open);
+  const handleDetailClick = (isbn: string) => {
+    if (openedBook.includes(isbn)) {
+      setOpenedBook((prev) => prev.filter((openedIsBn) => openedIsBn !== isbn));
+    } else {
+      setOpenedBook((prev) => [...prev, isbn]);
+    }
   };
 
   return data?.documents.map(
     ({ isbn, title, price, sale_price, thumbnail, authors, contents }) => {
+      const isOpen = openedBook.includes(isbn);
       return (
         <Fragment key={isbn}>
           <Accordion isOpen={isOpen} defaultHeight={100}>
             <BookListItem
+              expanded={isOpen}
+              isbn={isbn}
               title={title}
               price={price}
               sale_price={sale_price}
