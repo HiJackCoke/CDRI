@@ -35,7 +35,7 @@ const Price = styled.span`
 
 const ButtonGroup = styled.div`
   /* min-width: 240px; */
-  min-width:  240px;
+  min-width: 240px;
   display: flex;
   gap: 8px;
   margin-left: 56px;

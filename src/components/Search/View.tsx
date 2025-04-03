@@ -1,5 +1,3 @@
-// import searchIcon from "./icons/search.svg";
-// import closeIcon from "./icons/close.svg";
 import {
   DetailButton,
   StyledInput,

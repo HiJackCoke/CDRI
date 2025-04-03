@@ -1,19 +1,15 @@
-import {
-  Container,
-  PrevButtonWrapper,
-  NextButtonWrapper,
-  StyledButton,
-} from "./style";
+import { StyledButton } from "./styled";
 
-import Icon from "../Icon";
 import { PaginationGroupProps } from "./type";
+import { useMemo } from "react";
+import PaginationGroupView from "./View";
+const VISIBLE_PAGE_COUNT = 5;
 
 const PaginationGroup = ({
   page,
   totalPage,
   onPaginateTo,
 }: PaginationGroupProps) => {
-  const VISIBLE_PAGE_COUNT = 5;
   const start =
     Math.floor((page - 1) / VISIBLE_PAGE_COUNT) * VISIBLE_PAGE_COUNT;
   const end = Math.ceil(page / VISIBLE_PAGE_COUNT) * VISIBLE_PAGE_COUNT;
@@ -48,47 +44,35 @@ const PaginationGroup = ({
 
   const handlePageButtonClick = (index: number) => () => onPaginateTo(index);
 
-  const pages = Array(totalPage)
-    .fill(null)
-    .map((_, i) => i + 1)
-    .map((index) => (
-      <StyledButton
-        key={`paginate-${index}`}
-        $isSelected={index === page}
-        onClick={handlePageButtonClick(index)}
-      >
-        {index}
-      </StyledButton>
-    ))
-    .slice(start, end);
-
-  return (
-    <Container>
-      <PrevButtonWrapper>
-        <StyledButton disabled={page === 1} onClick={handleFirstButtonClick}>
-          <Icon icon="arrow_first" />
-        </StyledButton>
-        <StyledButton disabled={page === 1} onClick={handlePrevButtonClick}>
-          <Icon icon="arrow_left" />
-        </StyledButton>
-      </PrevButtonWrapper>
-      {pages}
-      <NextButtonWrapper>
-        <StyledButton
-          disabled={page === totalPage}
-          onClick={handleNextButtonClick}
-        >
-          <Icon icon="arrow_right" />
-        </StyledButton>
-        <StyledButton
-          disabled={page === totalPage}
-          onClick={handleLastButtonClick}
-        >
-          <Icon icon="arrow_last" />
-        </StyledButton>
-      </NextButtonWrapper>
-    </Container>
+  const pages = useMemo(
+    () =>
+      Array(totalPage)
+        .fill(null)
+        .map((_, i) => i + 1)
+        .map((index) => (
+          <StyledButton
+            key={`paginate-${index}`}
+            $isSelected={index === page}
+            onClick={handlePageButtonClick(index)}
+          >
+            {index}
+          </StyledButton>
+        ))
+        .slice(start, end),
+    [totalPage, start, end]
   );
+
+  const viewProps = {
+    page,
+    totalPage,
+    children: pages,
+    onPrev: handlePrevButtonClick,
+    onNext: handleNextButtonClick,
+    onFirst: handleFirstButtonClick,
+    onLast: handleLastButtonClick,
+  };
+
+  return <PaginationGroupView {...viewProps} />;
 };
 
 export default PaginationGroup;

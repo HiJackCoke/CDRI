@@ -149,6 +149,14 @@ const Title = styled.h3`
     ${theme.Title3};
     color: ${theme.Palette.Black};
   `}
+
+  overflow: hidden;
+  white-space: normal;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  word-break: keep-all;
 `;
 
 const Author = styled.span`
