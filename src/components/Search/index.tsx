@@ -15,6 +15,19 @@ const Search = ({ onSearch }: SearchProps) => {
 
   const [keyword, setKeyword] = useState("");
   const [history, setHistory] = useState<string[]>([]);
+  const [showDetail, setShowDetail] = useState(false);
+
+  useEffect(() => {
+    const storage = localStorage.getItem("search-history");
+
+    if (storage) {
+      const history = JSON.parse(storage);
+
+      if (isStringArray(history)) {
+        setHistory(history);
+      }
+    }
+  }, []);
 
   const handleChange: ChangeEventHandler<HTMLInputElement> = (e) => {
     setKeyword(e.target.value);
@@ -52,27 +65,21 @@ const Search = ({ onSearch }: SearchProps) => {
     handleHistory(newHistory);
   };
 
-  useEffect(() => {
-    const storage = localStorage.getItem("search-history");
-
-    if (storage) {
-      const history = JSON.parse(storage);
-
-      if (isStringArray(history)) {
-        setHistory(history);
-      }
-    }
-  }, []);
+  const handleDetailClick = (show: boolean) => {
+    setShowDetail(show);
+  };
 
   const viewProps: SearchViewProps = {
     ref: searchBoxRef,
     keyword,
     histories: history,
+    showDetail,
 
     onSubmit: handleSubmit,
     onInputChange: handleChange,
     onHistorySelect: handleHistorySelect,
     onHistoryRemove: handleRemove,
+    onDetailShow: handleDetailClick,
   };
 
   return <SearchView {...viewProps} />;
