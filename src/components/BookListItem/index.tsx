@@ -1,32 +1,14 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import styled, { css } from "styled-components";
 import theme from "../../styles/theme";
+import { Response } from "../../models/kakao/book";
 
-interface BookListItemProps {
-  title: string;
-  author: string;
-  price: number;
-  imageUrl: string;
-  description: string;
-  publishDate: string;
-  publisher: string;
-  isbn: string;
-  onBuyClick: () => void;
-}
-
-const BookListItem: React.FC<BookListItemProps> = ({
-  title,
-  author,
-  price,
-  imageUrl,
-  description = "",
-  publishDate = "",
-  publisher = "",
-  isbn = "",
-  onBuyClick,
-}) => {
+type Props = Pick<
+  Response["documents"][number],
+  "title" | "authors" | "price" | "thumbnail"
+>;
+const BookListItem = ({ title, price, thumbnail, authors }: Props) => {
   const [isDetailOpen, setIsDetailOpen] = useState(false);
-  const [isLiked, setIsLiked] = useState(false);
 
   const handleDetailClick = () => {
     setIsDetailOpen(!isDetailOpen);
@@ -34,16 +16,16 @@ const BookListItem: React.FC<BookListItemProps> = ({
 
   return (
     <Container>
-      <img src={imageUrl} alt={title} />
+      <img src={thumbnail} alt={title} />
       <ContentWrapper>
         <TitleWrapper>
           <Title>{title}</Title>
-          <Author>{author}</Author>
+          <Author>{authors.join(", ")}</Author>
         </TitleWrapper>
         <OtherWrapper>
           <Price>{price.toLocaleString()}원</Price>
           <ButtonGroup>
-            <StyledButton onClick={onBuyClick}>구매하기</StyledButton>
+            <StyledButton>구매하기</StyledButton>
             <DetailButton onClick={handleDetailClick}>
               상세보기
               <img src="/images/arrow-icon.svg" alt="arrow" />
@@ -51,25 +33,6 @@ const BookListItem: React.FC<BookListItemProps> = ({
           </ButtonGroup>
         </OtherWrapper>
       </ContentWrapper>
-      {/* <Accordion isOpen={isDetailOpen}>
-        <DetailContent>
-          <DetailSection>
-            <DetailTitle>도서 소개</DetailTitle>
-            <DetailText>{description}</DetailText>
-          </DetailSection>
-          <DetailSection>
-            <DetailTitle>도서 정보</DetailTitle>
-            <DetailGrid>
-              <DetailLabel>출간일</DetailLabel>
-              <DetailValue>{publishDate}</DetailValue>
-              <DetailLabel>출판사</DetailLabel>
-              <DetailValue>{publisher}</DetailValue>
-              <DetailLabel>ISBN</DetailLabel>
-              <DetailValue>{isbn}</DetailValue>
-            </DetailGrid>
-          </DetailSection>
-        </DetailContent>
-      </Accordion> */}
     </Container>
   );
 };
@@ -84,7 +47,7 @@ const Container = styled.div`
   padding: 16px;
   border-radius: 16px;
   > img {
-    min-width: 48px;
+    width: 48px;
     aspect-ratio: 48/68;
     margin-left: 32px;
 
@@ -163,7 +126,7 @@ const DetailButton = styled(StyledButton)`
   justify-content: space-between;
   ${({ theme }) => css`
     background: ${theme.Palette.LightGray};
-    color: ${theme.Palette.Gray};
+    color: ${theme.Text.Secondary};
     &:hover {
       background: ${theme.Palette.Gray};
       color: ${theme.Palette.White};
@@ -173,49 +136,6 @@ const DetailButton = styled(StyledButton)`
   img {
     width: 14px;
   }
-`;
-
-const DetailContent = styled.div`
-  padding: 0 24px 24px;
-  display: flex;
-  flex-direction: column;
-  gap: 32px;
-`;
-
-const DetailSection = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-`;
-
-const DetailTitle = styled.h4`
-  ${theme.Title3};
-  color: ${theme.Palette.Black};
-  margin: 0;
-`;
-
-const DetailText = styled.p`
-  ${theme.Body2};
-  color: ${theme.Palette.Gray};
-  margin: 0;
-  white-space: pre-wrap;
-  line-height: 1.6;
-`;
-
-const DetailGrid = styled.div`
-  display: grid;
-  grid-template-columns: 80px 1fr;
-  gap: 12px 24px;
-`;
-
-const DetailLabel = styled.span`
-  ${theme.Body2};
-  color: ${theme.Palette.Gray};
-`;
-
-const DetailValue = styled.span`
-  ${theme.Body2};
-  color: ${theme.Palette.Black};
 `;
 
 export default BookListItem;
