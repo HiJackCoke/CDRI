@@ -36,7 +36,7 @@ const BookList = ({ data, onPaginateTo }: Props) => {
     onPaginateTo(index);
   };
 
-  if (!data) return <NoData />;
+  if (!data?.documents.length) return <NoData />;
 
   return (
     <>

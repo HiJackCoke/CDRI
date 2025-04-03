@@ -15,7 +15,5 @@ export type SearchViewProps = {
 };
 
 export type SearchProps = {
-  onSearch?: SearchEventHandler;
-  // onSelect?: SearchEventHandler;
-  // onDelete?: SearchEventHandler;
+  onSearch: SearchEventHandler;
 };

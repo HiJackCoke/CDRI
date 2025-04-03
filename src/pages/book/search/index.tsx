@@ -6,14 +6,13 @@ import { useState } from "react";
 
 const SearchPage = () => {
   const [page, setPage] = useState(1);
-  const { data, isLoading } = useKakaoBookList({ query: "밀", page });
-
-  if (!data?.data || isLoading) return <span>loading</span>;
+  const [query, setQuery] = useState("");
+  const { data } = useKakaoBookList({ query, page });
 
   return (
     <>
-      <Search />
-      <BookList data={data.data} onPaginateTo={setPage} />
+      <Search onSearch={setQuery} />
+      <BookList data={data?.data} onPaginateTo={setPage} />
     </>
   );
 };
