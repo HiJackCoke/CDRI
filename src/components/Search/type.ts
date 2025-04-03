@@ -7,6 +7,7 @@ type FilterEventHandler<T extends unknown> = (
 
 export interface SearchViewProps<T extends unknown> {
   ref: ForwardedRef<HTMLDivElement>;
+  isTitle: boolean;
   histories: string[];
   keyword: string;
 
@@ -23,5 +24,6 @@ export interface SearchProps<T extends unknown> {
 }
 
 export interface SearchDetailProps<T extends unknown> {
+  isTitle: boolean;
   onSearch: FilterEventHandler<T>;
 }

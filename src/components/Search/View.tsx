@@ -18,6 +18,7 @@ import { Target } from "../../models/kakao/book";
 
 const SearchView = ({
   ref,
+  isTitle,
   keyword,
   histories,
 
@@ -79,7 +80,7 @@ const SearchView = ({
           </HistoryWrapper>
         </SearchBox>
 
-        <SearchDetail onSearch={onFilterChange} />
+        <SearchDetail isTitle={isTitle} onSearch={onFilterChange} />
       </SearchArea>
     </Container>
   );

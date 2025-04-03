@@ -16,6 +16,7 @@ const Search = ({ onSearch, onFilterChange }: SearchProps<Target>) => {
 
   const [keyword, setKeyword] = useState("");
   const [history, setHistory] = useState<string[]>([]);
+  const [isTitle, setIsTitle] = useState(true);
 
   useEffect(() => {
     const storage = localStorage.getItem("search-history");
@@ -42,6 +43,7 @@ const Search = ({ onSearch, onFilterChange }: SearchProps<Target>) => {
     e.preventDefault();
 
     onSearch?.(keyword);
+    setIsTitle(true);
 
     if (history.includes(keyword)) {
       const newHistory = moveToFirst(history, keyword);
@@ -60,22 +62,29 @@ const Search = ({ onSearch, onFilterChange }: SearchProps<Target>) => {
   const handleHistorySelect = (keyword: string) => {
     onSearch?.(keyword);
     setKeyword(keyword);
+    setIsTitle(true);
+
     const newHistory = moveToFirst(history, keyword);
 
     handleHistory(newHistory);
+  };
+
+  const handleFilterChange = (filter: Target, keyword: string) => {
+    onFilterChange(filter, keyword);
+    setIsTitle(false);
   };
 
   const viewProps: SearchViewProps<Target> = {
     ref: searchBoxRef,
     keyword,
     histories: history,
-    // showDetail,
+    isTitle,
 
     onSubmit: handleSubmit,
     onInputChange: handleChange,
     onHistorySelect: handleHistorySelect,
     onHistoryRemove: handleRemove,
-    onFilterChange,
+    onFilterChange: handleFilterChange,
   };
 
   return <SearchView {...viewProps} />;
