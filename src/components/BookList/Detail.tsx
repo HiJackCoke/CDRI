@@ -1,12 +1,11 @@
 import styled, { css } from "styled-components";
 import { ButtonGroup, Price, StyledButton } from "./styled";
-import { Response } from "../../models/kakao/book";
-import { HTMLAttributes } from "react";
 
-export type DetailProps = Pick<
-  Response["documents"][number],
-  "price" | "sale_price" | "contents"
-> &
+import { HTMLAttributes } from "react";
+import { BookData } from "./type";
+
+
+export type DetailProps = Pick<BookData, "price" | "sale_price" | "contents"> &
   HTMLAttributes<HTMLDivElement>;
 
 const BookListItemDetail = ({

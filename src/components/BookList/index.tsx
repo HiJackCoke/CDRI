@@ -1,56 +1,56 @@
 import { Fragment, useEffect, useMemo, useState } from "react";
 
 import Accordion from "../Accordion";
-import BookListItem, { LikeItem } from "./Item";
+import BookListItem from "./Item";
 import styled, { css } from "styled-components";
 
-import { Response } from "../../models/kakao/book";
 import PaginationGroup from "../PaginationGroup";
 import { PaginationGroupProps } from "../PaginationGroup/type";
-import NoData from "./NoData";
+import NoData from "../NoData";
+
+import { isBookData } from "./utils";
+import { BookData } from "./type";
 
 interface Props {
-  data?: Response;
+  isLike?: boolean;
+  bookData?: BookData[];
+  totalCount?: number;
+
   onPaginateTo: PaginationGroupProps["onPaginateTo"];
 }
 
-export const isLikeListArray = (value: LikeItem[]): value is LikeItem[] => {
-  return (
-    Array.isArray(value) &&
-    value.every((keyword) => keyword.isbn && keyword.title)
-  );
-};
+const BookList = ({
+  isLike = false,
+  bookData,
+  totalCount = 0,
 
-const BookList = ({ data, onPaginateTo }: Props) => {
+  onPaginateTo,
+}: Props) => {
   const [page, setPage] = useState(1);
   const [openedBook, setOpenedBook] = useState<string[]>([]);
-  const [likeList, setLikeList] = useState<LikeItem[]>([]);
+  const [likeList, setLikeList] = useState<BookData[]>([]);
 
-  const totalPage = useMemo(
-    () => Math.ceil((data?.meta.total_count || 0) / 10),
-    [data?.meta.total_count]
-  );
+  const totalPage = useMemo(() => Math.ceil(totalCount / 10), [totalCount]);
 
   useEffect(() => {
     const storage = localStorage.getItem("like-list");
 
     if (storage) {
       const likeList = JSON.parse(storage);
-
-      if (isLikeListArray(likeList)) {
+      if (Array.isArray(likeList) && likeList.every(isBookData)) {
         setLikeList(likeList);
       }
     }
   }, []);
 
-  const handleLike = ({ isbn, title }: LikeItem) => {
-    const isLiked = likeList.some((like) => like.isbn === isbn);
+  const handleLike = (bookData: BookData) => {
+    const isLiked = likeList.some((like) => like.isbn === bookData.isbn);
 
-    let newLikeList: LikeItem[] = [];
+    let newLikeList: BookData[] = [];
     if (isLiked) {
-      newLikeList = likeList.filter((like) => like.isbn !== isbn);
+      newLikeList = likeList.filter((like) => like.isbn !== bookData.isbn);
     } else {
-      newLikeList = [...likeList, { title, isbn }];
+      newLikeList = [...likeList, bookData];
     }
 
     setLikeList(newLikeList);
@@ -70,7 +70,20 @@ const BookList = ({ data, onPaginateTo }: Props) => {
     onPaginateTo(index);
   };
 
-  if (!data?.documents.length) return <NoData />;
+  if (!bookData?.length)
+    return (
+      <Container>
+        <ResultWrapper>
+          <span>{isLike ? "찜한 책" : "도서 검색 결과"}</span>{" "}
+          <span>
+            총 <strong>{0}</strong>건
+          </span>
+        </ResultWrapper>
+        <NoData
+          content={isLike ? "찜한 책이 없습니다." : "검색된 결과가 없습니다."}
+        />
+      </Container>
+    );
 
   return (
     <>
@@ -78,10 +91,10 @@ const BookList = ({ data, onPaginateTo }: Props) => {
         <ResultWrapper>
           <span>도서 검색 결과</span>{" "}
           <span>
-            총 <strong>{data.meta.total_count}</strong>건
+            총 <strong>{totalCount}</strong>건
           </span>
         </ResultWrapper>
-        {data.documents.map(
+        {bookData.map(
           ({
             isbn,
             title,

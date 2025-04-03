@@ -12,7 +12,11 @@ const SearchPage = () => {
   return (
     <>
       <Search onSearch={setQuery} />
-      <BookList data={data?.data} onPaginateTo={setPage} />
+      <BookList
+        bookData={data?.data?.documents}
+        totalCount={data?.data.meta.pageable_count}
+        onPaginateTo={setPage}
+      />
     </>
   );
 };

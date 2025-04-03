@@ -37,6 +37,7 @@ export const StyledButton = styled.button<{
   justify-items: center;
   transition: background-color 0.3s ease-in-out;
   width: 28px;
+  padding: 0;
   height: 28px;
   margin: 0 7px;
   outline: none;

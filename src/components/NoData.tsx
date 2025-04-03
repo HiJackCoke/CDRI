@@ -1,12 +1,14 @@
 import styled, { css } from "styled-components";
-import Icon from "../Icon";
+import Icon from "./Icon";
 
-const NoData = () => {
+interface Props {
+  content: string;
+}
+const NoData = ({ content }: Props) => {
   return (
     <Container>
       <Icon icon="no_data" width={5} height={5} />
-
-      <Description>검색된 결과가 없습니다.</Description>
+      <Description>{content}</Description>
     </Container>
   );
 };

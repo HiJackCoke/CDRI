@@ -1,48 +1,35 @@
 import { useEffect, useRef, useState } from "react";
 
-import { Response } from "../../models/kakao/book";
-
 import BookListItemDetail, { DetailProps } from "./Detail";
 import styled, { css } from "styled-components";
 import { ButtonGroup, Price, StyledButton } from "./styled";
 import Icon from "../Icon";
+import { BookData } from "./type";
 
 type Props = Pick<
-  Response["documents"][number],
+  BookData,
   "isbn" | "title" | "authors" | "price" | "thumbnail"
 > &
   DetailProps & {
-    isLike: boolean
+    isLike: boolean;
     expanded: boolean;
     onExpand?: (isbn: string) => void;
-    onLike?: (likeItem: LikeItem) => void;
+    onLike?: (bookData: BookData) => void;
   };
-
-export interface LikeItem {
-  title: string;
-  isbn: string;
-}
-
-
 
 const BookListItem = ({
   isLike,
   expanded,
-  isbn,
-  title,
-  sale_price,
-  price,
-  thumbnail,
-  authors,
-  contents,
-
   onExpand,
   onLike,
+
+  ...props
 }: Props) => {
+  const { isbn, title, sale_price, price, thumbnail, authors, contents } =
+    props;
   const ref = useRef<HTMLDivElement>(null);
 
   const [height, setHeight] = useState<number>(0);
-
 
   useEffect(() => {
     if (ref.current) {
@@ -52,23 +39,17 @@ const BookListItem = ({
     }
   }, [ref]);
 
-  
   const handleExpand = () => {
     onExpand?.(isbn);
   };
 
-
-
   return (
     <Container ref={ref} $height={height} $isOpen={expanded}>
       <ThumbnailWrapper>
-        <LikeButton
-          $isLiked={isLike}
-          onClick={() => onLike?.({ isbn, title })}
-        >
+        <LikeButton $isLiked={isLike} onClick={() => onLike?.(props)}>
           <Icon icon={isLike ? "like" : "unlike"} />
         </LikeButton>
-        <Thumbnail src={thumbnail} alt={title} />
+        <Thumbnail src={thumbnail || "/"} alt={title} />
       </ThumbnailWrapper>
 
       <ContentWrapper>
