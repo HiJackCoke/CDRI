@@ -3,7 +3,11 @@ import { useRef, useEffect, useState } from "react";
 import AccordionView from "./View";
 import { AccordionProps, AccordionViewProps } from "./type";
 
-const Accordion = ({ defaultHeight = 0, isOpen, children }: AccordionProps) => {
+const Accordion = ({
+  defaultHeight = 0,
+  isOpen = false,
+  children,
+}: AccordionProps) => {
   const contentRef = useRef<HTMLDivElement>(null);
   const [height, setHeight] = useState<number>(defaultHeight);
 
@@ -13,6 +17,7 @@ const Accordion = ({ defaultHeight = 0, isOpen, children }: AccordionProps) => {
 
       setHeight(isOpen ? contentHeight : defaultHeight);
     }
+ 
   }, [isOpen, children]);
 
   const viewProps: AccordionViewProps = {

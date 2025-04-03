@@ -24,7 +24,7 @@ const Container = styled.div<{ $height: number }>`
 
 const Content = styled.div<{ $isOpen: boolean }>`
   /* opacity: ${({ $isOpen }) => ($isOpen ? 1 : 0)}; */
-  transform: translateY(${({ $isOpen }) => ($isOpen ? "0" : "-10px")});
+  /* transform: translateY(${({ $isOpen }) => ($isOpen ? "0" : "10px")}); */
   transition: all 0.3s ease-in-out;
 `;
 
