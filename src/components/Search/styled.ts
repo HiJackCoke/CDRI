@@ -33,11 +33,6 @@ export const SearchForm = styled.form`
     color: ${theme.Text.Subtitle};
     background-color: ${theme.Palette.LightGray};
   `}
-
-  img {
-    width: 30px;
-    height: 30px;
-  }
 `;
 
 export const StyledInput = styled.input`

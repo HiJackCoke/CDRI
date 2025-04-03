@@ -1,5 +1,5 @@
-import searchIcon from "./icons/search.svg";
-import closeIcon from "./icons/close.svg";
+// import searchIcon from "./icons/search.svg";
+// import closeIcon from "./icons/close.svg";
 import {
   DetailButton,
   StyledInput,
@@ -15,6 +15,7 @@ import {
 } from "./styled";
 import { MouseEvent } from "react";
 import { SearchViewProps } from "./type";
+import Icon from "../Icon";
 
 const SearchView = ({
   ref,
@@ -46,7 +47,7 @@ const SearchView = ({
       <SearchArea>
         <SearchBox ref={ref} $historyLength={histories.length}>
           <SearchForm onSubmit={onSubmit}>
-            <img src={searchIcon} />
+            <Icon icon="search" width={1.875} height={1.875} />
             <StyledInput
               id="book-search"
               name="search"
@@ -70,7 +71,7 @@ const SearchView = ({
                     tabIndex={-1}
                     onClick={handleHistoryRemove(item)}
                   >
-                    <img src={closeIcon} />
+                    <Icon icon="close" width={1.5} height={1.5} />
                   </RemoveButton>
                 </HistoryItem>
               ))}
