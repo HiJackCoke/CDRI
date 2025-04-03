@@ -4,7 +4,6 @@ import { ButtonGroup, Price, StyledButton } from "./styled";
 import { HTMLAttributes } from "react";
 import { BookData } from "./type";
 
-
 export type DetailProps = Pick<BookData, "price" | "sale_price" | "contents"> &
   HTMLAttributes<HTMLDivElement>;
 
@@ -27,11 +26,13 @@ const BookListItemDetail = ({
             <OriginPrice>{price.toLocaleString()}원</OriginPrice>
           </PriceWrapper>
 
-          <PriceWrapper>
-            <PriceInfo>할인가</PriceInfo>
+          {sale_price > 0 && (
+            <PriceWrapper>
+              <PriceInfo>할인가</PriceInfo>
 
-            <Price>{sale_price.toLocaleString()}원</Price>
-          </PriceWrapper>
+              <Price>{sale_price.toLocaleString()}원</Price>
+            </PriceWrapper>
+          )}
         </PriceContainer>
 
         <ButtonGroup>
@@ -58,6 +59,7 @@ const DetailSection = styled.div`
   display: flex;
   flex-direction: column;
   gap: 16px;
+  width: 100%;
 `;
 
 const DetailTitle = styled.h4`
@@ -79,11 +81,28 @@ const DetailContent = styled.p`
   `}
 `;
 
+const OriginPrice = styled.span`
+  ${({ theme }) => css`
+    ${theme.Title3};
+    color: ${theme.Text.Primary};
+  `}
+  /* text-decoration: line-through; */
+  font-weight: normal;
+  white-space: nowrap;
+`;
+
 const PriceWrapper = styled.div`
   display: grid;
   grid-template-columns: 37px 1fr;
   align-items: center;
   gap: 8px;
+
+  &:has(+ div) {
+    margin-bottom: 8px;
+    ${OriginPrice} {
+      text-decoration: line-through;
+    }
+  }
 `;
 
 const PriceInfo = styled.span`
@@ -92,16 +111,6 @@ const PriceInfo = styled.span`
     ${theme.Small};
     color: ${theme.Text.Subtitle};
   `}
-`;
-
-const OriginPrice = styled.span`
-  ${({ theme }) => css`
-    ${theme.Title3};
-    color: ${theme.Text.Primary};
-  `}
-  text-decoration: line-through;
-  font-weight: normal;
-  white-space: nowrap;
 `;
 
 const DetailPriceButtonWrapper = styled.div`
