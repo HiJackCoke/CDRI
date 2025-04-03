@@ -5,17 +5,28 @@ import { Response } from "../../models/kakao/book";
 import BookListItemDetail, { DetailProps } from "./Detail";
 import styled, { css } from "styled-components";
 import { ButtonGroup, Price, StyledButton } from "./styled";
+import Icon from "../Icon";
 
 type Props = Pick<
   Response["documents"][number],
   "isbn" | "title" | "authors" | "price" | "thumbnail"
 > &
   DetailProps & {
+    isLike: boolean
     expanded: boolean;
     onExpand?: (isbn: string) => void;
+    onLike?: (likeItem: LikeItem) => void;
   };
 
+export interface LikeItem {
+  title: string;
+  isbn: string;
+}
+
+
+
 const BookListItem = ({
+  isLike,
   expanded,
   isbn,
   title,
@@ -26,9 +37,12 @@ const BookListItem = ({
   contents,
 
   onExpand,
+  onLike,
 }: Props) => {
   const ref = useRef<HTMLDivElement>(null);
+
   const [height, setHeight] = useState<number>(0);
+
 
   useEffect(() => {
     if (ref.current) {
@@ -38,13 +52,24 @@ const BookListItem = ({
     }
   }, [ref]);
 
+  
   const handleExpand = () => {
     onExpand?.(isbn);
   };
 
+
+
   return (
     <Container ref={ref} $height={height} $isOpen={expanded}>
-      <Thumbnail src={thumbnail} alt={title} />
+      <ThumbnailWrapper>
+        <LikeButton
+          $isLiked={isLike}
+          onClick={() => onLike?.({ isbn, title })}
+        >
+          <Icon icon={isLike ? "like" : "unlike"} />
+        </LikeButton>
+        <Thumbnail src={thumbnail} alt={title} />
+      </ThumbnailWrapper>
 
       <ContentWrapper>
         <Content>
@@ -53,14 +78,14 @@ const BookListItem = ({
               <Title>{title}</Title>
               <Author>{authors.join(", ")}</Author>
             </TitleWrapper>
-            <Price>{price.toLocaleString()}원</Price>
+            <ListPrice>{price.toLocaleString()}원</ListPrice>
           </InfoWrapper>
 
           <ButtonGroup>
             <BuyButton>구매하기</BuyButton>
             <DetailButton $isOpen={expanded} onClick={handleExpand}>
               상세보기
-              <img src="/images/arrow-icon.svg" alt="arrow" />
+              <Icon icon="arrow-down" />
             </DetailButton>
           </ButtonGroup>
         </Content>
@@ -77,10 +102,38 @@ const BookListItem = ({
 
 export default BookListItem;
 
+const ListPrice = styled(Price)``;
+
+const LikeButton = styled.button<{ $isLiked: boolean }>`
+  cursor: pointer;
+
+  transition: transform 0.3s ease-in-out;
+  transform-origin: center right;
+
+  position: absolute;
+  top: 5%;
+  right: 5%;
+  border: none;
+  margin: 0;
+  padding: 0;
+  background: transparent;
+
+  ${({ theme, $isLiked }) =>
+    css`
+      color: ${$isLiked ? theme.Red : theme.Palette.White};
+    `}
+`;
+
+const ThumbnailWrapper = styled.div`
+  position: relative;
+`;
+
 const Thumbnail = styled.img`
   transition: all 0.3s ease-in-out;
 
   max-width: 48px;
+  min-width: 48px;
+
   max-height: 68px;
 
   aspect-ratio: 48/68;
@@ -145,9 +198,7 @@ const DetailButton = styled(StyledButton)<{ $isOpen: boolean }>`
     background: ${theme.Palette.LightGray};
     color: ${theme.Text.Secondary};
 
-    img {
-      width: 14px;
-      height: 8px;
+    span {
       transition: transform 0.3s ease-in-out;
       transform: rotate(${$isOpen ? "180deg" : "0deg"});
     }
@@ -184,13 +235,24 @@ const Container = styled.div<{ $height: number; $isOpen: boolean }>`
       }
 
       ${Thumbnail} {
+        min-width: 210px;
         max-width: 210px;
         max-height: 100%;
+        aspect-ratio: 210/280;
       }
 
       ${BuyButton} {
         opacity: 0;
         pointer-events: none;
+      }
+
+      ${ListPrice} {
+        opacity: 0;
+        pointer-events: none;
+      }
+
+      ${LikeButton} {
+        transform: scale(1.5);
       }
     `}
 `;

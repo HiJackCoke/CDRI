@@ -1,7 +1,7 @@
-import { Fragment, useMemo, useState } from "react";
+import { Fragment, useEffect, useMemo, useState } from "react";
 
 import Accordion from "../Accordion";
-import BookListItem from "./Item";
+import BookListItem, { LikeItem } from "./Item";
 import styled, { css } from "styled-components";
 
 import { Response } from "../../models/kakao/book";
@@ -14,14 +14,48 @@ interface Props {
   onPaginateTo: PaginationGroupProps["onPaginateTo"];
 }
 
+export const isLikeListArray = (value: LikeItem[]): value is LikeItem[] => {
+  return (
+    Array.isArray(value) &&
+    value.every((keyword) => keyword.isbn && keyword.title)
+  );
+};
+
 const BookList = ({ data, onPaginateTo }: Props) => {
   const [page, setPage] = useState(1);
   const [openedBook, setOpenedBook] = useState<string[]>([]);
+  const [likeList, setLikeList] = useState<LikeItem[]>([]);
 
   const totalPage = useMemo(
     () => Math.ceil((data?.meta.total_count || 0) / 10),
     [data?.meta.total_count]
   );
+
+  useEffect(() => {
+    const storage = localStorage.getItem("like-list");
+
+    if (storage) {
+      const likeList = JSON.parse(storage);
+
+      if (isLikeListArray(likeList)) {
+        setLikeList(likeList);
+      }
+    }
+  }, []);
+
+  const handleLike = ({ isbn, title }: LikeItem) => {
+    const isLiked = likeList.some((like) => like.isbn === isbn);
+
+    let newLikeList: LikeItem[] = [];
+    if (isLiked) {
+      newLikeList = likeList.filter((like) => like.isbn !== isbn);
+    } else {
+      newLikeList = [...likeList, { title, isbn }];
+    }
+
+    setLikeList(newLikeList);
+    localStorage.setItem("like-list", JSON.stringify(newLikeList));
+  };
 
   const handleDetailClick = (isbn: string) => {
     if (openedBook.includes(isbn)) {
@@ -62,6 +96,7 @@ const BookList = ({ data, onPaginateTo }: Props) => {
               <Fragment key={isbn}>
                 <Accordion isOpen={isOpen} defaultHeight={100}>
                   <BookListItem
+                    isLike={likeList.some((like) => like.isbn === isbn)}
                     expanded={isOpen}
                     isbn={isbn}
                     title={title}
@@ -71,6 +106,7 @@ const BookList = ({ data, onPaginateTo }: Props) => {
                     authors={authors}
                     contents={contents}
                     onExpand={handleDetailClick}
+                    onLike={handleLike}
                   />
                 </Accordion>
 
