@@ -30,8 +30,6 @@ git clone https://github.com/HiJackCoke/CDRI.git
 cd CDRI
 ```
 
-````
-
 2. 의존성 설치
 
 ```bash
@@ -50,12 +48,18 @@ npm run dev
 npm run build
 ```
 
+5. .env 설정
+
+```bash
+.env.example 파일을 .env 파일로 변경 후 KEY 입력
+```
+
 ## 폴더 구조
 
 ```
 src/
 ├── components/     # 재사용 가능한 컴포넌트
-├── models/        # API 타입 정의 및 인터페이스
+├── models/        # 타입 정의 및 인터페이스
 ├── services/      # API 통신 및 비즈니스 로직
 ├── libs/          # 라이브러리 커스텀 및 Provider 로직
 ├── layout/        # 레이아웃 관련 컴포넌트
@@ -64,40 +68,6 @@ src/
 ├── routes.tsx     # 라우팅 설정
 └── main.tsx       # 애플리케이션 진입점
 ```
-
-## 주요 스크립트
-
-- `npm run dev`: 개발 서버 실행
-- `npm run build`: 프로덕션용 빌드 생성
-- `npm run lint`: ESLint를 사용한 코드 검사
-- `npm run preview`: 빌드된 결과물 미리보기
-
-## 환경 설정
-
-프로젝트는 다음과 같은 설정 파일들을 포함합니다:
-
-- `vite.config.ts`: Vite 설정
-- `tsconfig.json`: TypeScript 설정
-- `eslint.config.js`: ESLint 설정
-- `.env`: 환경 변수 설정
-
-## 개발 가이드라인
-
-1. **코드 스타일**
-
-   - TypeScript 사용
-   - ESLint 규칙 준수
-   - 컴포넌트 기반 개발
-
-2. **상태 관리**
-
-   - React Query를 사용한 서버 상태 관리
-   - React의 내장 훅을 활용한 로컬 상태 관리
-
-3. **라우팅**
-   - React Router DOM을 사용한 클라이언트 사이드 라우팅
-   - 라우트 설정은 `routes.tsx`에서 관리
-````
 
 ## 특이사항
 
