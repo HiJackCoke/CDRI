@@ -8,13 +8,7 @@ import {
 } from "react";
 import SearchView from "./View";
 import { SearchProps, SearchViewProps } from "./type";
-
-const isStringArray = (value: unknown): value is string[] => {
-  return (
-    Array.isArray(value) &&
-    value.every((keyword) => typeof keyword === "string")
-  );
-};
+import { isStringArray, moveToFirst } from "./utils";
 
 const Search = ({ onSearch }: SearchProps) => {
   const searchBoxRef = useRef<HTMLDivElement>(null);
@@ -34,9 +28,15 @@ const Search = ({ onSearch }: SearchProps) => {
   const handleSubmit: FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
 
-    const newHistory = [keyword, ...history.slice(0, 7)];
-    handleHistory(newHistory);
     onSearch?.(keyword);
+
+    if (history.includes(keyword)) {
+      const newHistory = moveToFirst(history, keyword);
+      handleHistory(newHistory);
+    } else {
+      const newHistory = [keyword, ...history.slice(0, 7)];
+      handleHistory(newHistory);
+    }
   };
 
   const handleRemove = (keyword: string) => {
@@ -46,6 +46,10 @@ const Search = ({ onSearch }: SearchProps) => {
 
   const handleHistorySelect = (keyword: string) => {
     onSearch?.(keyword);
+    setKeyword(keyword);
+    const newHistory = moveToFirst(history, keyword);
+
+    handleHistory(newHistory);
   };
 
   useEffect(() => {
