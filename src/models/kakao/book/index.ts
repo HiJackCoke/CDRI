@@ -1,9 +1,11 @@
+export type Target = "title" | "isbn" | "publisher" | "person";
+
 export type Params = {
   query: string;
   sort?: "accuracy" | "latest";
   page?: number;
   size?: number;
-  target?: "title" | "isbn" | "publisher" | "person";
+  target?: Target;
 };
 
 type Document = {

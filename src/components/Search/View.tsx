@@ -14,6 +14,7 @@ import { MouseEvent } from "react";
 import { SearchViewProps } from "./type";
 import Icon from "../Icon";
 import SearchDetail from "./Detail";
+import { Target } from "../../models/kakao/book";
 
 const SearchView = ({
   ref,
@@ -25,7 +26,7 @@ const SearchView = ({
   onHistorySelect,
   onHistoryRemove,
   onFilterChange
-}: SearchViewProps) => {
+}: SearchViewProps<Target>) => {
   const handleHistoryRemove =
     (item: string) => (e: MouseEvent<HTMLButtonElement>) => {
       e.stopPropagation();

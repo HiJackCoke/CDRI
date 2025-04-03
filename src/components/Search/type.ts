@@ -1,9 +1,11 @@
 import { ChangeEventHandler, FormEventHandler, ForwardedRef } from "react";
-
 type SearchEventHandler = (keyword: string) => void;
-type FilterEventHandler = (filter: string, keyword: string) => void;
+type FilterEventHandler<T extends unknown> = (
+  filter: T,
+  keyword: string
+) => void;
 
-export interface SearchViewProps {
+export interface SearchViewProps<T extends unknown> {
   ref: ForwardedRef<HTMLDivElement>;
   histories: string[];
   keyword: string;
@@ -12,14 +14,14 @@ export interface SearchViewProps {
   onInputChange: ChangeEventHandler<HTMLInputElement>;
   onHistorySelect: SearchEventHandler;
   onHistoryRemove: SearchEventHandler;
-  onFilterChange: FilterEventHandler;
+  onFilterChange: FilterEventHandler<T>;
 }
 
-export interface SearchProps {
+export interface SearchProps<T extends unknown> {
   onSearch: SearchEventHandler;
-  onFilterChange: FilterEventHandler;
+  onFilterChange: FilterEventHandler<T>;
 }
 
-export interface SearchDetailProps {
-  onSearch: FilterEventHandler;
+export interface SearchDetailProps<T extends unknown> {
+  onSearch: FilterEventHandler<T>;
 }

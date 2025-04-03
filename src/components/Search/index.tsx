@@ -9,13 +9,13 @@ import {
 import SearchView from "./View";
 import { SearchProps, SearchViewProps } from "./type";
 import { isStringArray, moveToFirst } from "./utils";
+import { Target } from "../../models/kakao/book";
 
-const Search = ({ onSearch, onFilterChange }: SearchProps) => {
+const Search = ({ onSearch, onFilterChange }: SearchProps<Target>) => {
   const searchBoxRef = useRef<HTMLDivElement>(null);
 
   const [keyword, setKeyword] = useState("");
   const [history, setHistory] = useState<string[]>([]);
-  // const [showDetail, setShowDetail] = useState(false);
 
   useEffect(() => {
     const storage = localStorage.getItem("search-history");
@@ -65,7 +65,7 @@ const Search = ({ onSearch, onFilterChange }: SearchProps) => {
     handleHistory(newHistory);
   };
 
-  const viewProps: SearchViewProps = {
+  const viewProps: SearchViewProps<Target> = {
     ref: searchBoxRef,
     keyword,
     histories: history,

@@ -1,15 +1,15 @@
-import { DropdownItem, DropdownProps, DropdownViewProps } from "./typet";
+import { DropdownItem, DropdownProps, DropdownViewProps } from "./type";
 import DropdownView from "./View";
 
-const Dropdown = ({ isOpen, list, onSelect }: DropdownProps) => {
-  const handleSelect = (item: DropdownItem) => {
-    onSelect(item);
-  };
-
-  const viewProps: DropdownViewProps = {
+const Dropdown = <T extends DropdownItem<unknown, unknown>>({
+  list,
+  isOpen,
+  onSelect,
+}: DropdownProps<T>) => {
+  const viewProps: DropdownViewProps<T> = {
     isOpen,
     list,
-    onSelect: handleSelect,
+    onSelect,
   };
   return <DropdownView {...viewProps} />;
 };

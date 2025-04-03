@@ -14,22 +14,27 @@ import Icon from "../Icon";
 import Dropdown from "../Dropdown";
 import { ChangeEvent, useState } from "react";
 import { SearchDetailProps } from "./type";
-import { DropdownItem } from "../Dropdown/typet";
 
-const LIST = [
+import { Target } from "../../models/kakao/book";
+
+interface ListProps {
+  label: string;
+  value: Target;
+}
+const LIST: ListProps[] = [
   { label: "제목", value: "title" },
   { label: "저자명", value: "person" },
   { label: "출판사", value: "publisher" },
 ];
 
-const SearchDetail = ({ onSearch }: SearchDetailProps) => {
+const SearchDetail = ({ onSearch }: SearchDetailProps<Target>) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const [selectedFilter, setSelectedFilter] = useState(LIST[0]);
   const [keyword, setKeyword] = useState("");
 
-  const handleDropdown = (item: DropdownItem) => {
+  const handleDropdown = (item: ListProps) => {
     setSelectedFilter(item);
     setIsDropdownOpen(false);
   };
