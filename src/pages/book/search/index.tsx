@@ -1,16 +1,19 @@
 import BookList from "../../../components/BookList";
+
 import Search from "../../../components/Search";
 import { useKakaoBookList } from "../../../services/kakao/useKakaoService";
+import { useState } from "react";
 
 const SearchPage = () => {
-  const { data } = useKakaoBookList({ query: "밀" });
+  const [page, setPage] = useState(1);
+  const { data, isLoading } = useKakaoBookList({ query: "밀", page });
 
-  if (!data?.data) return <span>loading</span>;
+  if (!data?.data || isLoading) return <span>loading</span>;
 
   return (
     <>
       <Search />
-      <BookList data={data.data} />
+      <BookList data={data.data} onPaginateTo={setPage} />
     </>
   );
 };

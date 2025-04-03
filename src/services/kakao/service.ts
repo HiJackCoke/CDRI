@@ -11,6 +11,7 @@ const KAKAO = axios.create({
 
 class Service {
   async getBooks(params: Params): Promise<AxiosResponse<Response>> {
+    console.log(params);
     return await KAKAO.get<Response>("/v3/search/book", { params });
   }
 }
