@@ -62,8 +62,6 @@ const PaginationGroup = ({
     ))
     .slice(start, end);
 
-  console.log(totalPage);
-
   return (
     <Container>
       <PrevButtonWrapper>

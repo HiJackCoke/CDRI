@@ -7,6 +7,7 @@ import styled, { css } from "styled-components";
 import { Response } from "../../models/kakao/book";
 import PaginationGroup from "../PaginationGroup";
 import { PaginationGroupProps } from "../PaginationGroup/type";
+import NoData from "./NoData";
 
 interface Props {
   data?: Response;
@@ -35,16 +36,18 @@ const BookList = ({ data, onPaginateTo }: Props) => {
     onPaginateTo(index);
   };
 
+  if (!data) return <NoData />;
+
   return (
     <>
       <Container>
         <ResultWrapper>
           <span>도서 검색 결과</span>{" "}
           <span>
-            총 <strong>{data?.meta.total_count}</strong>건
+            총 <strong>{data.meta.total_count}</strong>건
           </span>
         </ResultWrapper>
-        {data?.documents.map(
+        {data.documents.map(
           ({
             isbn,
             title,
