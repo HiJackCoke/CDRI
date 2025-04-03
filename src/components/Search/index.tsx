@@ -10,12 +10,12 @@ import SearchView from "./View";
 import { SearchProps, SearchViewProps } from "./type";
 import { isStringArray, moveToFirst } from "./utils";
 
-const Search = ({ onSearch }: SearchProps) => {
+const Search = ({ onSearch, onFilterChange }: SearchProps) => {
   const searchBoxRef = useRef<HTMLDivElement>(null);
 
   const [keyword, setKeyword] = useState("");
   const [history, setHistory] = useState<string[]>([]);
-  const [showDetail, setShowDetail] = useState(false);
+  // const [showDetail, setShowDetail] = useState(false);
 
   useEffect(() => {
     const storage = localStorage.getItem("search-history");
@@ -65,21 +65,17 @@ const Search = ({ onSearch }: SearchProps) => {
     handleHistory(newHistory);
   };
 
-  const handleDetailClick = (show: boolean) => {
-    setShowDetail(show);
-  };
-
   const viewProps: SearchViewProps = {
     ref: searchBoxRef,
     keyword,
     histories: history,
-    showDetail,
+    // showDetail,
 
     onSubmit: handleSubmit,
     onInputChange: handleChange,
     onHistorySelect: handleHistorySelect,
     onHistoryRemove: handleRemove,
-    onDetailShow: handleDetailClick,
+    onFilterChange,
   };
 
   return <SearchView {...viewProps} />;

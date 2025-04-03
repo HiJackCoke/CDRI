@@ -1,21 +1,25 @@
 import { ChangeEventHandler, FormEventHandler, ForwardedRef } from "react";
 
 type SearchEventHandler = (keyword: string) => void;
+type FilterEventHandler = (filter: string, keyword: string) => void;
 
-export type SearchViewProps = {
+export interface SearchViewProps {
   ref: ForwardedRef<HTMLDivElement>;
   histories: string[];
   keyword: string;
-  showDetail: boolean;
 
   onSubmit: FormEventHandler<HTMLFormElement>;
-
   onInputChange: ChangeEventHandler<HTMLInputElement>;
   onHistorySelect: SearchEventHandler;
   onHistoryRemove: SearchEventHandler;
-  onDetailShow: (show: boolean) => void;
-};
+  onFilterChange: FilterEventHandler;
+}
 
-export type SearchProps = {
+export interface SearchProps {
   onSearch: SearchEventHandler;
-};
+  onFilterChange: FilterEventHandler;
+}
+
+export interface SearchDetailProps {
+  onSearch: FilterEventHandler;
+}

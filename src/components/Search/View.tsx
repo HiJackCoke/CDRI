@@ -1,5 +1,4 @@
 import {
-  DetailButton,
   StyledInput,
   SearchArea,
   SearchForm,
@@ -10,29 +9,22 @@ import {
   RemoveButton,
   HistoryItem,
   HistoryWrapper,
-  PopupContainer,
-  FilterSelect,
-  FilterLabel,
-  SearchInput,
-  SearchButton,
-  ArrowIcon,
-  SearchInputWrapper,
-  CloseButton,
 } from "./styled";
 import { MouseEvent } from "react";
 import { SearchViewProps } from "./type";
 import Icon from "../Icon";
+import SearchDetail from "./Detail";
 
 const SearchView = ({
   ref,
   keyword,
   histories,
-  showDetail,
+
   onSubmit,
   onInputChange,
   onHistorySelect,
   onHistoryRemove,
-  onDetailShow,
+  onFilterChange
 }: SearchViewProps) => {
   const handleHistoryRemove =
     (item: string) => (e: MouseEvent<HTMLButtonElement>) => {
@@ -86,28 +78,8 @@ const SearchView = ({
           </HistoryWrapper>
         </SearchBox>
 
-        <DetailButton onClick={() => onDetailShow(true)}>상세검색</DetailButton>
+        <SearchDetail onSearch={onFilterChange} />
       </SearchArea>
-
-      <PopupContainer $isOpen={showDetail}>
-        <CloseButton onClick={() => onDetailShow(false)}>
-          <Icon icon="close" width={1.25} height={1.25} />
-        </CloseButton>
-        <SearchInputWrapper>
-          <FilterSelect>
-            <FilterLabel>제목</FilterLabel>
-
-            <ArrowIcon icon="arrow-down" width={1.25} height={1.5} />
-          </FilterSelect>
-
-          <SearchInput>
-            <input placeholder="검색어 입력" />
-          </SearchInput>
-        </SearchInputWrapper>
-        <SearchButton>
-          <span>검색</span>
-        </SearchButton>
-      </PopupContainer>
     </Container>
   );
 };

@@ -149,14 +149,6 @@ const Title = styled.h3`
     ${theme.Title3};
     color: ${theme.Palette.Black};
   `}
-
-  overflow: hidden;
-  white-space: normal;
-  text-overflow: ellipsis;
-  display: -webkit-box;
-  -webkit-line-clamp: 1;
-  -webkit-box-orient: vertical;
-  word-break: keep-all;
 `;
 
 const Author = styled.span`
@@ -216,32 +208,46 @@ const Container = styled.div<{ $height: number; $isOpen: boolean }>`
     margin-bottom: 1px;
   }
 
-  ${({ $isOpen }) =>
-    $isOpen &&
-    css`
-      ${Content} {
-        margin-bottom: 0px;
-      }
+  ${({ $isOpen }) => {
+    if ($isOpen) {
+      return css`
+        ${Content} {
+          margin-bottom: 0px;
+        }
 
-      ${Thumbnail} {
-        min-width: 210px;
-        max-width: 210px;
-        max-height: 100%;
-        aspect-ratio: 210/280;
-      }
+        ${Thumbnail} {
+          min-width: 210px;
+          max-width: 210px;
+          max-height: 100%;
+          aspect-ratio: 210/280;
+        }
 
-      ${BuyButton} {
-        opacity: 0;
-        pointer-events: none;
-      }
+        ${BuyButton} {
+          opacity: 0;
+          pointer-events: none;
+        }
 
-      ${ListPrice} {
-        opacity: 0;
-        pointer-events: none;
-      }
+        ${ListPrice} {
+          opacity: 0;
+          pointer-events: none;
+        }
 
-      ${LikeButton} {
-        transform: scale(1.5);
-      }
-    `}
+        ${LikeButton} {
+          transform: scale(1.5);
+        }
+      `;
+    } else {
+      return css`
+        ${Title} {
+          overflow: hidden;
+          white-space: normal;
+          text-overflow: ellipsis;
+          display: -webkit-box;
+          -webkit-line-clamp: 1;
+          -webkit-box-orient: vertical;
+          word-break: keep-all;
+        }
+      `;
+    }
+  }}
 `;

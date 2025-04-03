@@ -57,6 +57,7 @@ export const StyledInput = styled.input`
 
 export const DetailButton = styled.button`
   transition: background-color 0.3s;
+  margin-block: 5px;
 
   padding: 5px 10px;
   height: 40px;
@@ -176,9 +177,12 @@ export const CloseButton = styled.button`
   right: 8px;
   top: 8px;
   cursor: pointer;
+  color: ${({ theme }) => theme.Text.Subtitle};
 `;
 
 export const FilterSelect = styled.div`
+  position: relative;
+
   cursor: pointer;
   position: relative;
   width: 100px;
@@ -189,6 +193,12 @@ export const FilterSelect = styled.div`
   align-content: center;
 
   border-bottom: 1px solid #d2d6da;
+`;
+
+export const SelectList = styled.ul`
+  ${({ theme }) => css`
+    background: ${theme.Palette.White};
+  `}
 `;
 
 export const FilterLabel = styled.span`
@@ -213,6 +223,7 @@ export const SearchInputWrapper = styled.div`
 `;
 
 export const SearchInput = styled.div`
+  transition: border-bottom 0.3s;
   position: relative;
   width: 208px;
   height: 36px;
@@ -220,7 +231,12 @@ export const SearchInput = styled.div`
   ${({ theme }) => css`
     ${theme.Body2};
 
-    border-bottom: 1px solid ${({ theme }) => theme.Palette.Primary};
+    border-bottom: 1px solid #d2d6da;
+
+    &:focus-within {
+      border-bottom: 1px solid ${({ theme }) => theme.Palette.Primary};
+    }
+
     color: ${theme.Text.Subtitle};
 
     input {
@@ -235,6 +251,7 @@ export const SearchInput = styled.div`
 `;
 
 export const SearchButton = styled.button`
+  transition: opacity 0.3s;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -244,6 +261,10 @@ export const SearchButton = styled.button`
   border-radius: 8px;
   border: none;
   cursor: pointer;
+
+  &:hover {
+    opacity: 0.9;
+  }
 
   ${({ theme }) => css`
     ${theme.Body2};
