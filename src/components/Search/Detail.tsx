@@ -12,7 +12,7 @@ import {
 
 import Icon from "../Icon";
 import Dropdown from "../Dropdown";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useEffect, useRef, useState } from "react";
 import { SearchDetailProps } from "./type";
 
 import { Target } from "../../models/kakao/book";
@@ -28,11 +28,25 @@ const LIST: ListProps[] = [
 ];
 
 const SearchDetail = ({ onSearch }: SearchDetailProps<Target>) => {
+  const ref = useRef<HTMLDivElement>(null);
   const [isOpen, setIsOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const [selectedFilter, setSelectedFilter] = useState(LIST[0]);
   const [keyword, setKeyword] = useState("");
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (ref.current && !ref.current.contains(event.target as Node)) {
+        setIsOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [ref]);
 
   const handleDropdown = (item: ListProps) => {
     setSelectedFilter(item);
@@ -50,9 +64,9 @@ const SearchDetail = ({ onSearch }: SearchDetailProps<Target>) => {
 
   return (
     <>
-      <DetailButton onClick={() => setIsOpen(!isOpen)}>상세검색</DetailButton>
+      <DetailButton onClick={() => setIsOpen(true)}>상세검색</DetailButton>
 
-      <PopupContainer $isOpen={isOpen}>
+      <PopupContainer ref={ref} $isOpen={isOpen}>
         <CloseButton onClick={() => setIsOpen(false)}>
           <Icon icon="close" width={1.25} height={1.25} />
         </CloseButton>
