@@ -27,7 +27,6 @@ CDRI는 과제 테스트
 
 ```bash
 git clone https://github.com/HiJackCoke/CDRI.git
-cd CDRI
 ```
 
 2. 의존성 설치
