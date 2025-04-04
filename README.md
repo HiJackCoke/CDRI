@@ -58,7 +58,7 @@ npm run build
 
 ```
 src/
-├── components/     # 재사용 가능한 컴포넌트
+├── components/    # 재사용 가능한 컴포넌트
 ├── models/        # 타입 정의 및 인터페이스
 ├── services/      # API 통신 및 비즈니스 로직
 ├── libs/          # 라이브러리 커스텀 및 Provider 로직
